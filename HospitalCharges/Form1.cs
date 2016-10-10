@@ -42,39 +42,36 @@ namespace HospitalCharges {
         } 
 
         private void btnCalc_Click(object sender, EventArgs e) {
+                           
+            //if any variables have strings...
+            try {
 
-            if (!isNegative()) {
-                MessageBox.Show("Negative numbers not accepted!", "Error!",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //all variables are found in the textboxes 
+                double NumDays = double.Parse(tbDays.Text);
+                double MedCharge = double.Parse(tbMed.Text);
+                double SurgCharge = double.Parse(tbSurg.Text);
+                double LabCharge = double.Parse(tbLab.Text);
+                double RehabCharge = double.Parse(tbRehab.Text);
+
+                double MiscTotal = CalcMiscCharges(MedCharge, 
+                    SurgCharge, LabCharge, RehabCharge);
+                double StayCharge = CalcStayCharges(NumDays);
+                double Total = CalcTotalCharges(StayCharge, MiscTotal);
+
+                //variable total is outputed to tbTotal textbox
+                tbTotal.Text = "$" + Total.ToString("F");
+
+                if (!isNegative()) {
+                    MessageBox.Show("Negative numbers not accepted!", "Error!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
-            else {
-                           
-                //if any variables have strings...
-                try {
-
-                    //all variables are found in the textboxes 
-                    double NumDays = double.Parse(tbDays.Text);
-                    double MedCharge = double.Parse(tbMed.Text);
-                    double SurgCharge = double.Parse(tbSurg.Text);
-                    double LabCharge = double.Parse(tbLab.Text);
-                    double RehabCharge = double.Parse(tbRehab.Text);
-
-                    double MiscTotal = CalcMiscCharges(MedCharge, 
-                        SurgCharge, LabCharge, RehabCharge);
-                    double StayCharge = CalcStayCharges(NumDays);
-                    double Total = CalcTotalCharges(StayCharge, MiscTotal);
-
-                    //variable total is outputed to tbTotal textbox
-                    tbTotal.Text = "$" + Total.ToString("F");
-                }
-
-                //...show error message
-                catch {
-                   MessageBox.Show( "One or more of the fields" +
-                        " contains incorrect input!", "Error!", MessageBoxButtons.OK 
-                         , MessageBoxIcon.Warning);
-                }
+            //...show error message
+            catch {
+                MessageBox.Show( "One or more of the fields" +
+                    " contains incorrect input!", "Error!", MessageBoxButtons.OK 
+                        , MessageBoxIcon.Warning);
             }
         }
     }
